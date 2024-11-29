@@ -19,5 +19,4 @@
       </font>
    </Text>
    <Rectangle fx:id="time_back" arcHeight="5.0" arcWidth="5.0" height="28.0" stroke="BLACK" strokeType="INSIDE" width="190.0" x="14.0" y="14.0" />
-
 </AnchorPane>
