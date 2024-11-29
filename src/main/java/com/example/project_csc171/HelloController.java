@@ -6,8 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.image.Image;
 
 import java.awt.*;
 import java.net.URL;
@@ -52,6 +54,14 @@ public class HelloController implements Initializable {
     int movement_tracker = 0;
     int movement_tracker_obs = 0;
     boolean moving_obstacles = false;
+    int img_timer = 0;
+
+    Image ninja_stable_1_l = new Image("/ninja_stable_1_l.png");
+    Image ninja_stable_1_r = new Image("/ninja_stable_1_r.png");
+    Image ninja_stable_2_l = new Image("/ninja_stable_2_l.png");
+    Image ninja_stable_2_r = new Image("/ninja_stable_2_r.png");
+    Image ninja_moving_l = new Image("/ninja_moving_l.png");
+    Image ninja_moving_r = new Image("/ninja_moving_r.png");
 
 
     @Override
@@ -79,11 +89,24 @@ public class HelloController implements Initializable {
         if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
         else time_block.setWidth(190);
 
-        if(keyEvent.getCode() == KeyCode.RIGHT && ninja.getX() < 200) {
-            moving_right = true;
+        if(keyEvent.getCode() == KeyCode.RIGHT) {
+            if(ninja.getX() < 200) {
+                ninja.setFill(new ImagePattern(ninja_moving_r));
+                moving_right = true;
+            } else {
+                ninja.setFill(new ImagePattern(ninja_stable_2_l));
+                img_timer=10;
+            }
+
         }
-        else if(keyEvent.getCode() == KeyCode.LEFT && ninja.getX() > 200) {
-            moving_left = true;
+        else if(keyEvent.getCode() == KeyCode.LEFT) {
+            if(ninja.getX() > 200){
+                ninja.setFill(new ImagePattern(ninja_moving_l));
+                moving_left = true;
+            } else {
+                ninja.setFill(new ImagePattern(ninja_stable_2_r));
+                img_timer=10;
+            }
         }
         create_obstacle();
         moving_obstacles = true;
@@ -178,13 +201,19 @@ public class HelloController implements Initializable {
     void load(){
         System.out.println("START!");
         ninja.setX(5);
+        ninja.setFill(new ImagePattern(ninja_stable_1_r));
     }
-
-
 
     //happening per frame
     void update(){
         time++;
+
+        if(img_timer>0){
+            img_timer--;
+        } else {
+            if(ninja.getX()<10) ninja.setFill(new ImagePattern(ninja_stable_1_r));
+            else if(ninja.getX()>470.0) ninja.setFill(new ImagePattern(ninja_stable_1_l));
+        }
 
         score.setText("" + score_num);
 
@@ -199,6 +228,8 @@ public class HelloController implements Initializable {
             if(movement_tracker==3) {
                 moving_right = false;
                 movement_tracker=0;
+                ninja.setFill(new ImagePattern(ninja_stable_2_l));
+                img_timer=10;
             }
         }
 
@@ -208,6 +239,8 @@ public class HelloController implements Initializable {
             if(movement_tracker==3) {
                 moving_left = false;
                 movement_tracker=0;
+                ninja.setFill(new ImagePattern(ninja_stable_2_r));
+                img_timer=10;
             }
         }
 
@@ -238,5 +271,6 @@ public class HelloController implements Initializable {
         moving_left = false;
         ninja.setX(5);
         time_block.setWidth(190);
+        ninja.setFill(new ImagePattern(ninja_stable_1_r));
     }
 }
