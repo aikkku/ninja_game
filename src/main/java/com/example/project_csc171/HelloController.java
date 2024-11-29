@@ -81,16 +81,10 @@ public class HelloController implements Initializable {
 
         if(keyEvent.getCode() == KeyCode.RIGHT && ninja.getX() < 200) {
             moving_right = true;
-//            go_right();
         }
         else if(keyEvent.getCode() == KeyCode.LEFT && ninja.getX() > 200) {
             moving_left = true;
-//            go_left();
         }
-//        while(movement_tracker < 3){
-//            System.out.println("Hello");
-//        }
-
         create_obstacle();
         moving_obstacles = true;
     }
@@ -107,16 +101,6 @@ public class HelloController implements Initializable {
         }
     }
 
-
-//    private void move_obstacles() {
-//        for(Rectangle rectangle : obstacles) {
-//            rectangle.setY(rectangle.getY() + 50);
-//            if(rectangle.getY() > plane.getHeight()){
-//                obstacles.removeFirst();
-//            }
-//
-//        }
-//    }
 
     void go_right(){
         ninja.setX(ninja.getX()+(481.0/3));
