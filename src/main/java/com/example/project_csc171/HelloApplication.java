@@ -32,7 +32,7 @@ public class HelloApplication extends Application {
         stage.setResizable(false);
         stage.show();
 
-
+        //yoo
 //        // Load the image from resources folder
 //        Image image = new Image(getClass().getResource("/forest2.0.jpg").toString());
 //
