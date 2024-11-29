@@ -11,7 +11,7 @@
          <Image url="@/forest2.0.jpg" />
       </image>
    </ImageView>
-   <Rectangle fx:id="column" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="867.0" stroke="BLACK" strokeType="INSIDE" width="158.0" x="221.0" />
+   <Rectangle fx:id="column" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="867.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="158.0" x="221.0" />
    <Text fx:id="score" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" x="278.0" y="36.0" AnchorPane.rightAnchor="14.55078125">
       <font>
          <Font name="Monospaced Regular" size="24.0" />

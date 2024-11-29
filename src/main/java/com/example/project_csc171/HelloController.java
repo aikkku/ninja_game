@@ -9,13 +9,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 import javafx.scene.image.Image;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+
 import javafx.scene.paint.Color;
 
 public class HelloController implements Initializable {
@@ -47,6 +53,8 @@ public class HelloController implements Initializable {
 
     Rectangle time_block = new Rectangle(14, 14, 190, 28);
 
+    Rectangle start_bg = new Rectangle(0, 0, 600, 867);
+    Text start_text = new Text(0, 400, "Press ENTER to start the game...");
 
     double time_decrease = 1.0;
     boolean moving_right = false;
@@ -56,12 +64,17 @@ public class HelloController implements Initializable {
     boolean moving_obstacles = false;
     int img_timer = 0;
 
+    boolean game_on = false;
+
+    String data;
+
     Image ninja_stable_1_l = new Image("/ninja_stable_1_l.png");
     Image ninja_stable_1_r = new Image("/ninja_stable_1_r.png");
     Image ninja_stable_2_l = new Image("/ninja_stable_2_l.png");
     Image ninja_stable_2_r = new Image("/ninja_stable_2_r.png");
     Image ninja_moving_l = new Image("/ninja_moving_l.png");
     Image ninja_moving_r = new Image("/ninja_moving_r.png");
+    Image column_pic = new Image("/column.png");
 
 
     @Override
@@ -76,43 +89,65 @@ public class HelloController implements Initializable {
         };
         gameLoop.start();
 
-        time_block.setFill(Color.RED);
+        start_text.setFill(Color.WHITE);
+        start_text.setFont(Font.loadFont("/Wewak.ttf", 45));
+        start_text.setStroke(Color.RED);
+        start_text.setStrokeWidth(0.5);
         plane.getChildren().add(time_block);
     }
 
     @FXML
     void pressed(KeyEvent keyEvent) {
-        score_num++;
+        if(game_on){
+            score_num++;
 
-        if(score_num % 5 == 0) time_decrease+=0.01;
+            if(score_num % 5 == 0) time_decrease+=0.01;
 
-        if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
-        else time_block.setWidth(190);
+            if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
+            else time_block.setWidth(190);
 
-        if(keyEvent.getCode() == KeyCode.RIGHT) {
-            if(ninja.getX() < 200) {
-                ninja.setFill(new ImagePattern(ninja_moving_r));
-                moving_right = true;
-            } else {
-                ninja.setFill(new ImagePattern(ninja_stable_2_l));
-                img_timer=10;
+            if(keyEvent.getCode() == KeyCode.RIGHT) {
+                if(ninja.getX() < 200) {
+                    ninja.setFill(new ImagePattern(ninja_moving_r));
+                    moving_right = true;
+                } else {
+                    ninja.setFill(new ImagePattern(ninja_stable_2_l));
+                    img_timer=10;
+                }
+
             }
-
-        }
-        else if(keyEvent.getCode() == KeyCode.LEFT) {
-            if(ninja.getX() > 200){
-                ninja.setFill(new ImagePattern(ninja_moving_l));
-                moving_left = true;
-            } else {
-                ninja.setFill(new ImagePattern(ninja_stable_2_r));
-                img_timer=10;
+            else if(keyEvent.getCode() == KeyCode.LEFT) {
+                if(ninja.getX() > 200){
+                    ninja.setFill(new ImagePattern(ninja_moving_l));
+                    moving_left = true;
+                } else {
+                    ninja.setFill(new ImagePattern(ninja_stable_2_r));
+                    img_timer=10;
+                }
+            }
+            create_obstacle();
+            moving_obstacles = true;
+        } else {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                game_on = true;
+                plane.getChildren().removeAll(obstacles);
+                obstacles.clear();
+                time = 0;
+                score_num = 0;
+                time_decrease = 1.0;
+                movement_tracker = 0;
+                movement_tracker_obs = 0;
+                moving_obstacles = false;
+                moving_right = false;
+                moving_left = false;
+                ninja.setX(5);
+                time_block.setWidth(190);
+                ninja.setFill(new ImagePattern(ninja_stable_1_r));
+                removeStartScreen();
             }
         }
-        create_obstacle();
-        moving_obstacles = true;
     }
 
-    //made with chatgpt
     private void move_obstacles() {
         for (int i = obstacles.size() - 1; i >= 0; i--) {
             Rectangle rectangle = obstacles.get(i);
@@ -123,30 +158,6 @@ public class HelloController implements Initializable {
             System.out.println("array size: " + obstacles.size());
         }
     }
-
-
-    void go_right(){
-        ninja.setX(ninja.getX()+(481.0/3));
-        movement_tracker++;
-//            System.out.println(plane.getWidth() - ninja.getWidth());
-        if(movement_tracker==3) {
-            moving_right = false;
-            movement_tracker=0;
-        }
-    }
-
-    void go_left(){
-        ninja.setX(ninja.getX()-(481.0/3));
-        movement_tracker++;
-        if(movement_tracker==3) {
-            moving_left = false;
-            movement_tracker=0;
-        }
-    }
-
-//    void move_column(){
-//        column.setY(column.getY()+20);
-//    }
 
     int randomness = r.nextInt(3);
     boolean randside = r.nextBoolean();
@@ -201,76 +212,94 @@ public class HelloController implements Initializable {
     void load(){
         System.out.println("START!");
         ninja.setX(5);
+        column.setFill(new ImagePattern(column_pic));
         ninja.setFill(new ImagePattern(ninja_stable_1_r));
+        start_bg.setFill(Color.rgb(0,0,0,0.5));
+        plane.getChildren().add(start_text);
+        plane.getChildren().add(start_bg);
     }
 
     //happening per frame
     void update(){
-        time++;
+        if(game_on){
+            time++;
 
-        if(img_timer>0){
-            img_timer--;
-        } else {
-            if(ninja.getX()<10) ninja.setFill(new ImagePattern(ninja_stable_1_r));
-            else if(ninja.getX()>470.0) ninja.setFill(new ImagePattern(ninja_stable_1_l));
-        }
+            if(img_timer>0){
+                img_timer--;
+            } else {
+                if(ninja.getX()<10) ninja.setFill(new ImagePattern(ninja_stable_1_r));
+                else if(ninja.getX()>470.0) ninja.setFill(new ImagePattern(ninja_stable_1_l));
+            }
 
-        score.setText("" + score_num);
+            score.setText("" + score_num);
 
-        if(collisionDetecion()) {
-            resetGame();
-        }
+            if(collisionDetecion()) {
+                resetGame();
+            }
 
-        if(moving_right) {
-            ninja.setX(ninja.getX()+(481.0/3));
-            movement_tracker++;
+            if(moving_right) {
+                ninja.setX(ninja.getX()+(481.0/3));
+                movement_tracker++;
 //            System.out.println(plane.getWidth() - ninja.getWidth());
-            if(movement_tracker==3) {
-                moving_right = false;
-                movement_tracker=0;
-                ninja.setFill(new ImagePattern(ninja_stable_2_l));
-                img_timer=10;
+                if(movement_tracker==3) {
+                    moving_right = false;
+                    movement_tracker=0;
+                    ninja.setFill(new ImagePattern(ninja_stable_2_l));
+                    img_timer=10;
+                }
             }
-        }
 
-        if(moving_left) {
-            ninja.setX(ninja.getX()-(481.0/3));
-            movement_tracker++;
-            if(movement_tracker==3) {
-                moving_left = false;
-                movement_tracker=0;
-                ninja.setFill(new ImagePattern(ninja_stable_2_r));
-                img_timer=10;
+            if(moving_left) {
+                ninja.setX(ninja.getX()-(481.0/3));
+                movement_tracker++;
+                if(movement_tracker==3) {
+                    moving_left = false;
+                    movement_tracker=0;
+                    ninja.setFill(new ImagePattern(ninja_stable_2_r));
+                    img_timer=10;
+                }
             }
-        }
 
-        if(moving_obstacles) {
-            move_obstacles();
-            movement_tracker_obs++;
-            if(movement_tracker_obs==3) {
-                moving_obstacles=false;
-                movement_tracker_obs=0;
+            if(moving_obstacles) {
+                move_obstacles();
+                movement_tracker_obs++;
+                if(movement_tracker_obs==3) {
+                    moving_obstacles=false;
+                    movement_tracker_obs=0;
+                }
             }
+
+            if(time_block.getWidth()>0) time_block.setWidth(time_block.getWidth()-time_decrease);
+            else resetGame();
         }
-
-        if(time_block.getWidth()>0) time_block.setWidth(time_block.getWidth()-time_decrease);
-        else resetGame();
-
     }
 
     private void resetGame() {
-        plane.getChildren().removeAll(obstacles);
-        obstacles.clear();
-        time = 0;
-        score_num = 0;
-        time_decrease = 1.0;
-        movement_tracker = 0;
-        movement_tracker_obs = 0;
-        moving_obstacles = false;
-        moving_right = false;
-        moving_left = false;
-        ninja.setX(5);
-        time_block.setWidth(190);
-        ninja.setFill(new ImagePattern(ninja_stable_1_r));
+        game_on = false;
+
+        try {
+            File myObj = new File("src/main/resources/scores.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        setStartScreen();
+    }
+
+    void setStartScreen() {
+        start_text.setVisible(true);
+        start_bg.setVisible(true);
+    }
+
+    void removeStartScreen() {
+        start_text.setVisible(false);
+        start_bg.setVisible(false);
     }
 }
