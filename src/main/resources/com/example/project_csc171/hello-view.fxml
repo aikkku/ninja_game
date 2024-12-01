@@ -24,11 +24,11 @@
       <font>
          <Font name="Wewak" size="51.0" />
       </font></Text>
-   <Text fx:id="leaderboard_title" fill="RED" layoutX="163.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderbord">
+   <Text fx:id="leaderboard_title" fill="RED" layoutX="163.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderbord" visible="false">
       <font>
          <Font name="Wewak" size="70.0" />
       </font></Text>
-   <Text fx:id="leaderboard" fill="#fffa00" layoutX="227.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 3:">
+   <Text fx:id="leaderboard" fill="#fffa00" layoutX="227.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 3:" visible="false">
       <font>
          <Font name="Pentapixel" size="76.0" />
       </font>
