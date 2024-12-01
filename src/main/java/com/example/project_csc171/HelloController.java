@@ -9,23 +9,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.Font;
 import javafx.scene.image.Image;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 import javafx.scene.paint.Color;
 
 public class HelloController implements Initializable {
-
     AnimationTimer gameLoop;
 
     @FXML
@@ -53,8 +46,9 @@ public class HelloController implements Initializable {
 
     Rectangle time_block = new Rectangle(14, 14, 190, 28);
 
-    Rectangle start_bg = new Rectangle(0, 0, 600, 867);
-    Text start_text = new Text(0, 400, "Press ENTER to start the game...");
+//    Rectangle start_bg = new Rectangle(0, 0, 600, 867);
+
+
 
     double time_decrease = 1.0;
     boolean moving_right = false;
@@ -66,6 +60,31 @@ public class HelloController implements Initializable {
 
     boolean game_on = false;
 
+
+
+//    Text start_text = new Text(0, 400, "Press ENTER to start the game...");
+    @FXML
+    private Text leaderboard_title;
+
+    @FXML
+    private Text start_text;
+
+    @FXML
+    private Text leaderboard;
+
+    @FXML
+    private Text player_name;
+
+    @FXML
+    private Text player_score;
+
+    @FXML
+    private Rectangle start_bg;
+
+    @FXML
+    private Text leaderboard_subtitle;
+
+    String player_name_text="";
     String data;
 
     Image ninja_stable_1_l = new Image("/ninja_stable_1_l.png");
@@ -88,6 +107,19 @@ public class HelloController implements Initializable {
             }
         };
         gameLoop.start();
+
+        try {
+            File myObj = new File("src/main/resources/scores.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
 
         time_block.setFill(Color.RED);
         plane.getChildren().add(time_block);
@@ -151,9 +183,37 @@ public class HelloController implements Initializable {
                 time_block.setWidth(190);
                 ninja.setFill(new ImagePattern(ninja_stable_1_r));
                 removeStartScreen();
+            }else{
+                if(player_name_text.length()<3){
+                    handleKeyPress(keyEvent);
+                    player_name.setText(player_name_text);
+                    if(player_name_text.length()==3){
+                        make_leaderboard();
+                    }
+                }
             }
         }
     }
+
+    void make_leaderboard() {
+        String[] tmp = data.split(" ");
+        ArrayList<String> leaderboardList = new ArrayList<>(Arrays.asList(tmp));
+
+
+    }
+
+    void handleKeyPress(KeyEvent keyEvent) {
+        KeyCode code = keyEvent.getCode();
+
+        if (code.isLetterKey()) {
+            player_name_text += code.getName().toUpperCase();
+            System.out.println("Updated string: " + player_name_text);
+        } else if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
+            player_name_text = player_name_text.substring(0, player_name_text.length() - 1);
+            System.out.println("Updated string: " + player_name_text);
+        }
+    }
+
 
     private void move_obstacles() {
         for (int i = obstacles.size() - 1; i >= 0; i--) {
@@ -221,9 +281,6 @@ public class HelloController implements Initializable {
         ninja.setX(5);
         column.setFill(new ImagePattern(column_pic));
         ninja.setFill(new ImagePattern(ninja_stable_1_r));
-        start_bg.setFill(Color.rgb(0,0,0,0.5));
-        plane.getChildren().add(start_text);
-        plane.getChildren().add(start_bg);
     }
 
     //happening per frame
@@ -284,28 +341,29 @@ public class HelloController implements Initializable {
     private void resetGame() {
         game_on = false;
 
-        try {
-            File myObj = new File("src/main/resources/scores.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                data = myReader.nextLine();
-                System.out.println(data);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+
 
         setStartScreen();
     }
 
     void setStartScreen() {
+        player_score.setText(String.valueOf(score_num));
+
+        leaderboard_subtitle.setVisible(true);
+
+        player_name.setVisible(true);
+        player_score.setVisible(true);
         start_text.setVisible(true);
         start_bg.setVisible(true);
     }
 
     void removeStartScreen() {
+        leaderboard.setVisible(false);
+        leaderboard_title.setVisible(false);
+        leaderboard_subtitle.setVisible(false);
+
+        player_name.setVisible(false);
+        player_score.setVisible(false);
         start_text.setVisible(false);
         start_bg.setVisible(false);
     }
