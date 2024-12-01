@@ -188,19 +188,73 @@ public class HelloController implements Initializable {
                     handleKeyPress(keyEvent);
                     player_name.setText(player_name_text);
                     if(player_name_text.length()==3){
-                        make_leaderboard();
+                        String leaderboard_text = make_leaderboard();
+                        leaderboard.setText(leaderboard_text);
+                        leaderboard_title.setVisible(true);
+                        leaderboard.setVisible(true);
                     }
                 }
             }
         }
     }
 
-    void make_leaderboard() {
+    //todo:
+    //  1. make it appear properly
+    //  2. add players info to file of scores.txt
+    //  3. start screen appear over everything
+    //  4. disable from adding info in the beginning of game (check if it the score zero)
+
+    //todo:
+    //  1. add chainsaws
+    //  2. music
+    //  3. sounds
+
+    String make_leaderboard() {
         String[] tmp = data.split(" ");
         ArrayList<String> leaderboardList = new ArrayList<>(Arrays.asList(tmp));
+        Map<Integer, String> sortedPlayerScores = createSortedPlayerMap(leaderboardList);
+        sortedPlayerScores.put(score_num, player_name_text);
+        // Output only the top 3 players
+        System.out.println("Top 3 Players:");
 
+        String leaderboard_text="TOP 3:";
+        int player_place=0;
 
+        int count = 1;
+        for (Map.Entry<Integer, String> entry : sortedPlayerScores.entrySet()) {
+            if (player_name_text.equals(entry.getValue())) {
+                player_place = count;
+            }
+
+            if (count++ < 4) {
+                leaderboard_text+="\n" + entry.getValue() + "..." + entry.getKey();
+                System.out.println("Player: " + entry.getValue() + ", Score: " + entry.getKey());
+            }
+        }
+
+        leaderboard_text+="\n" + "Player is #"+String.valueOf(player_place);
+        return leaderboard_text;
     }
+
+    Map<Integer, String> createSortedPlayerMap(ArrayList<String> playerData) {
+        // Use a TreeMap with a custom comparator for descending order
+        TreeMap<Integer, String> scoreMap = new TreeMap<>(Collections.reverseOrder());
+
+        for (String data : playerData) {
+            // Extract the player's name (first three letters)
+            String playerName = data.substring(0, 3);
+
+            // Extract the score (remaining characters) and parse as an integer
+            int score = Integer.parseInt(data.substring(3));
+
+            // Put the score and player name into the map
+            scoreMap.put(score, playerName);
+        }
+
+        return scoreMap;
+    }
+
+
 
     void handleKeyPress(KeyEvent keyEvent) {
         KeyCode code = keyEvent.getCode();
@@ -366,5 +420,7 @@ public class HelloController implements Initializable {
         player_score.setVisible(false);
         start_text.setVisible(false);
         start_bg.setVisible(false);
+
+        player_name_text="";
     }
 }
