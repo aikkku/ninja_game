@@ -28,7 +28,7 @@
       <font>
          <Font name="Wewak" size="70.0" />
       </font></Text>
-   <Text fx:id="leaderboard" fill="#fffa00" layoutX="227.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 3:" visible="false">
+   <Text fx:id="leaderboard" fill="#fffa00" layoutX="216.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 3:" textAlignment="CENTER" visible="false">
       <font>
          <Font name="Pentapixel" size="76.0" />
       </font>

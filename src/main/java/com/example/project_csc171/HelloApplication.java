@@ -16,7 +16,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
 
         scene.getRoot().requestFocus();
-        stage.setTitle("Hello!");
+        stage.setTitle("Ninja Game");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

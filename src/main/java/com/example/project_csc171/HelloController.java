@@ -12,7 +12,9 @@ import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -85,7 +87,6 @@ public class HelloController implements Initializable {
     private Text leaderboard_subtitle;
 
     String player_name_text="";
-    String data;
 
     Image ninja_stable_1_l = new Image("/ninja_stable_1_l.png");
     Image ninja_stable_1_r = new Image("/ninja_stable_1_r.png");
@@ -107,19 +108,6 @@ public class HelloController implements Initializable {
             }
         };
         gameLoop.start();
-
-        try {
-            File myObj = new File("src/main/resources/scores.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                data = myReader.nextLine();
-                System.out.println(data);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
 
         time_block.setFill(Color.RED);
         plane.getChildren().add(time_block);
@@ -184,7 +172,7 @@ public class HelloController implements Initializable {
                 ninja.setFill(new ImagePattern(ninja_stable_1_r));
                 removeStartScreen();
             }else{
-                if(player_name_text.length()<3){
+                if(player_name_text.length()<3 && score_num > 0){
                     handleKeyPress(keyEvent);
                     player_name.setText(player_name_text);
                     if(player_name_text.length()==3){
@@ -192,6 +180,8 @@ public class HelloController implements Initializable {
                         leaderboard.setText(leaderboard_text);
                         leaderboard_title.setVisible(true);
                         leaderboard.setVisible(true);
+                        leaderboard.toFront();
+                        leaderboard_title.toFront();
                     }
                 }
             }
@@ -199,17 +189,27 @@ public class HelloController implements Initializable {
     }
 
     //todo:
-    //  1. make it appear properly
-    //  2. add players info to file of scores.txt
-    //  3. start screen appear over everything
-    //  4. disable from adding info in the beginning of game (check if it the score zero)
-
-    //todo:
     //  1. add chainsaws
     //  2. music
     //  3. sounds
 
     String make_leaderboard() {
+        String data = "";
+        try {
+            File myObj = new File("src/main/resources/scores.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        System.out.println(data);
+
         String[] tmp = data.split(" ");
         ArrayList<String> leaderboardList = new ArrayList<>(Arrays.asList(tmp));
         Map<Integer, String> sortedPlayerScores = createSortedPlayerMap(leaderboardList);
@@ -231,8 +231,25 @@ public class HelloController implements Initializable {
                 System.out.println("Player: " + entry.getValue() + ", Score: " + entry.getKey());
             }
         }
+        String leaderboard_subtitle_text = "Player is #"+String.valueOf(player_place);
 
-        leaderboard_text+="\n" + "Player is #"+String.valueOf(player_place);
+        leaderboard_subtitle.setText(leaderboard_subtitle_text);
+
+        String tofile = "";
+        for (Map.Entry<Integer, String> entry : sortedPlayerScores.entrySet()) {
+                tofile += entry.getValue() + "" + entry.getKey() + " ";
+        }
+
+        try {
+            FileWriter myWriter = new FileWriter("src/main/resources/scores.txt");
+            myWriter.write(tofile);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
         return leaderboard_text;
     }
 
@@ -409,6 +426,15 @@ public class HelloController implements Initializable {
         player_score.setVisible(true);
         start_text.setVisible(true);
         start_bg.setVisible(true);
+
+        start_bg.toFront();
+
+        leaderboard_subtitle.toFront();
+        player_name.toFront();
+        player_score.toFront();
+        start_text.toFront();
+
+
     }
 
     void removeStartScreen() {
