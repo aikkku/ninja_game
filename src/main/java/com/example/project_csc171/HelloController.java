@@ -89,24 +89,22 @@ public class HelloController implements Initializable {
         };
         gameLoop.start();
 
-        start_text.setFill(Color.WHITE);
-        start_text.setFont(Font.loadFont("/Wewak.ttf", 45));
-        start_text.setStroke(Color.RED);
-        start_text.setStrokeWidth(0.5);
+        time_block.setFill(Color.RED);
         plane.getChildren().add(time_block);
     }
 
     @FXML
     void pressed(KeyEvent keyEvent) {
         if(game_on){
-            score_num++;
-
-            if(score_num % 5 == 0) time_decrease+=0.01;
-
-            if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
-            else time_block.setWidth(190);
 
             if(keyEvent.getCode() == KeyCode.RIGHT) {
+                score_num++;
+
+                if(score_num % 5 == 0) time_decrease+=0.01;
+
+                if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
+                else time_block.setWidth(190);
+
                 if(ninja.getX() < 200) {
                     ninja.setFill(new ImagePattern(ninja_moving_r));
                     moving_right = true;
@@ -114,9 +112,17 @@ public class HelloController implements Initializable {
                     ninja.setFill(new ImagePattern(ninja_stable_2_l));
                     img_timer=10;
                 }
-
+                create_obstacle();
+                moving_obstacles = true;
             }
             else if(keyEvent.getCode() == KeyCode.LEFT) {
+                score_num++;
+
+                if(score_num % 5 == 0) time_decrease+=0.01;
+
+                if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
+                else time_block.setWidth(190);
+
                 if(ninja.getX() > 200){
                     ninja.setFill(new ImagePattern(ninja_moving_l));
                     moving_left = true;
@@ -124,9 +130,10 @@ public class HelloController implements Initializable {
                     ninja.setFill(new ImagePattern(ninja_stable_2_r));
                     img_timer=10;
                 }
+                create_obstacle();
+                moving_obstacles = true;
             }
-            create_obstacle();
-            moving_obstacles = true;
+
         } else {
             if(keyEvent.getCode() == KeyCode.ENTER) {
                 game_on = true;
