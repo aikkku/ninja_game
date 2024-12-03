@@ -38,17 +38,12 @@ public class HelloController implements Initializable {
     @FXML
     private Text score;
 
-    //todo:
-    //   High score handled using files save in file and take from file
-
     Random r = new Random();
     double time = 0;
     int score_num = 0;
     ArrayList<Rectangle> obstacles = new ArrayList<>();
 
     Rectangle time_block = new Rectangle(14, 14, 190, 28);
-
-//    Rectangle start_bg = new Rectangle(0, 0, 600, 867);
 
 
 
@@ -95,6 +90,8 @@ public class HelloController implements Initializable {
     Image ninja_moving_l = new Image("/ninja_moving_l.png");
     Image ninja_moving_r = new Image("/ninja_moving_r.png");
     Image column_pic = new Image("/column.png");
+    Image chainsaw_l = new Image("/chainsaw_l.png");
+    Image chainsaw_r = new Image("/chainsaw_r.png");
 
 
     @Override
@@ -116,7 +113,6 @@ public class HelloController implements Initializable {
     @FXML
     void pressed(KeyEvent keyEvent) {
         if(game_on){
-
             if(keyEvent.getCode() == KeyCode.RIGHT) {
                 score_num++;
 
@@ -254,17 +250,11 @@ public class HelloController implements Initializable {
     }
 
     Map<Integer, String> createSortedPlayerMap(ArrayList<String> playerData) {
-        // Use a TreeMap with a custom comparator for descending order
         TreeMap<Integer, String> scoreMap = new TreeMap<>(Collections.reverseOrder());
 
         for (String data : playerData) {
-            // Extract the player's name (first three letters)
             String playerName = data.substring(0, 3);
-
-            // Extract the score (remaining characters) and parse as an integer
             int score = Integer.parseInt(data.substring(3));
-
-            // Put the score and player name into the map
             scoreMap.put(score, playerName);
         }
 
@@ -286,7 +276,7 @@ public class HelloController implements Initializable {
     }
 
 
-    private void move_obstacles() {
+    void move_obstacles() {
         for (int i = obstacles.size() - 1; i >= 0; i--) {
             Rectangle rectangle = obstacles.get(i);
             rectangle.setY(rectangle.getY() + 125.0/3);
@@ -302,7 +292,8 @@ public class HelloController implements Initializable {
     void create_obstacle(){
         if(randside && randomness > 0) {
             randomness--;
-            Rectangle robs = new Rectangle(column.getX() + column.getWidth(), 27.0-12.5, 200, 25);
+            Rectangle robs = new Rectangle(column.getX() + column.getWidth() - 5, 27.0-12.5, 200, 50);
+            robs.setFill(new ImagePattern(chainsaw_r));
 
             obstacles.add(robs);
 
@@ -310,8 +301,9 @@ public class HelloController implements Initializable {
             System.out.println("right");
         } else if (randomness > 0){
             randomness--;
-            Rectangle lobs = new Rectangle(column.getX() - 200, 27.0-12.5, 200, 25);
-//            (125.0/2.0)+27.9-12.5
+            Rectangle lobs = new Rectangle(column.getX() - 200 + 5, 27.0-12.5, 200, 50);
+            lobs.setFill(new ImagePattern(chainsaw_l));
+
             obstacles.add(lobs);
 
             plane.getChildren().addAll(lobs);
@@ -336,12 +328,6 @@ public class HelloController implements Initializable {
                 return true;
             }
         }
-        return false;
-    }
-
-
-    //todo
-    boolean isNinjaDead() {
         return false;
     }
 
@@ -411,8 +397,6 @@ public class HelloController implements Initializable {
 
     private void resetGame() {
         game_on = false;
-
-
 
         setStartScreen();
     }
