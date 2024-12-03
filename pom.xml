@@ -11,9 +11,13 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<junit.version>5.10.2</junit.version>  </properties>
+    <junit.version>5.10.2</junit.version>  </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+
+    <dependency> <groupId>org.openjfx</groupId> <artifactId>javafx-media</artifactId> <version>21.0.3</version> </dependency>
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
@@ -25,7 +29,7 @@
       <version>17.0.6</version>
     </dependency>
 
-<dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
