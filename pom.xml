@@ -14,19 +14,21 @@
     <junit.version>5.10.2</junit.version>  </properties>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
-
-    <dependency> <groupId>org.openjfx</groupId> <artifactId>javafx-media</artifactId> <version>21.0.3</version> </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-media</artifactId>
+      <version>21.0.3</version>
+    </dependency>
 
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>17.0.6</version>
+      <version>17.0.12</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>17.0.6</version>
+      <version>17.0.12</version>
     </dependency>
 
     <dependency>

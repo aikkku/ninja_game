@@ -6,10 +6,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import javafx.util.Duration;
 
 import javafx.scene.paint.Color;
 
@@ -57,9 +61,10 @@ public class HelloController implements Initializable {
 
     boolean game_on = false;
 
+    boolean chill = false;
 
 
-//    Text start_text = new Text(0, 400, "Press ENTER to start the game...");
+    //    Text start_text = new Text(0, 400, "Press ENTER to start the game...");
     @FXML
     private Text leaderboard_title;
 
@@ -89,9 +94,23 @@ public class HelloController implements Initializable {
     Image ninja_stable_2_r = new Image("/ninja_stable_2_r.png");
     Image ninja_moving_l = new Image("/ninja_moving_l.png");
     Image ninja_moving_r = new Image("/ninja_moving_r.png");
+
+    Image chill_l = new Image("/chill_l.png");
+    Image chill_r = new Image("/chill_r.png");
+    Image chill_moving = new Image("/chill_moving.png");
+
     Image column_pic = new Image("/column.png");
     Image chainsaw_l = new Image("/chainsaw_l.png");
     Image chainsaw_r = new Image("/chainsaw_r.png");
+
+    URL sound1 = getClass().getResource("/music/woosh.mp3");
+    URL sound2 = getClass().getResource("/music/loose.mp3");
+
+    Media wooshm = new Media(sound1.toExternalForm());
+    Media loosem = new Media(sound2.toExternalForm());
+
+    MediaPlayer woosh = new MediaPlayer(wooshm);
+    MediaPlayer loose = new MediaPlayer(loosem);
 
 
     @Override
@@ -116,16 +135,21 @@ public class HelloController implements Initializable {
             if(keyEvent.getCode() == KeyCode.RIGHT) {
                 score_num++;
 
+                woosh.play();
+
                 if(score_num % 5 == 0) time_decrease+=0.01;
 
                 if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
                 else time_block.setWidth(190);
 
                 if(ninja.getX() < 200) {
-                    ninja.setFill(new ImagePattern(ninja_moving_r));
+                    play_woosh();
+                    if(!chill) ninja.setFill(new ImagePattern(ninja_moving_r));
+                    else ninja.setFill(new ImagePattern(chill_moving));
                     moving_right = true;
                 } else {
-                    ninja.setFill(new ImagePattern(ninja_stable_2_l));
+                    if(!chill) ninja.setFill(new ImagePattern(ninja_stable_2_l));
+                    else ninja.setFill(new ImagePattern(chill_l));
                     img_timer=10;
                 }
                 create_obstacle();
@@ -140,10 +164,13 @@ public class HelloController implements Initializable {
                 else time_block.setWidth(190);
 
                 if(ninja.getX() > 200){
-                    ninja.setFill(new ImagePattern(ninja_moving_l));
+                    play_woosh();
+                    if(!chill) ninja.setFill(new ImagePattern(ninja_moving_l));
+                    else ninja.setFill(new ImagePattern(chill_moving));
                     moving_left = true;
                 } else {
-                    ninja.setFill(new ImagePattern(ninja_stable_2_r));
+                    if(!chill) ninja.setFill(new ImagePattern(ninja_stable_2_r));
+                    else ninja.setFill(new ImagePattern(chill_r));
                     img_timer=10;
                 }
                 create_obstacle();
@@ -165,9 +192,20 @@ public class HelloController implements Initializable {
                 moving_left = false;
                 ninja.setX(5);
                 time_block.setWidth(190);
-                ninja.setFill(new ImagePattern(ninja_stable_1_r));
+                if(!chill) ninja.setFill(new ImagePattern(ninja_stable_1_r));
+                else ninja.setFill(new ImagePattern(chill_r));
                 removeStartScreen();
-            }else{
+            } else if(keyEvent.getCode() == KeyCode.TAB){
+                chill = !chill;
+                if(chill) {
+                    ninja.setWidth(ninja.getWidth()+20);
+                    ninja.setHeight(ninja.getHeight()+20);
+                }
+                if(!chill) {
+                    ninja.setWidth(ninja.getWidth()-20);
+                    ninja.setHeight(ninja.getHeight()-20);
+                }
+            } else{
                 if(player_name_text.length()<3 && score_num > 0){
                     handleKeyPress(keyEvent);
                     player_name.setText(player_name_text);
@@ -233,7 +271,7 @@ public class HelloController implements Initializable {
 
         String tofile = "";
         for (Map.Entry<Integer, String> entry : sortedPlayerScores.entrySet()) {
-                tofile += entry.getValue() + "" + entry.getKey() + " ";
+            tofile += entry.getValue() + "" + entry.getKey() + " ";
         }
 
         try {
@@ -337,7 +375,8 @@ public class HelloController implements Initializable {
         System.out.println("START!");
         ninja.setX(5);
         column.setFill(new ImagePattern(column_pic));
-        ninja.setFill(new ImagePattern(ninja_stable_1_r));
+        if(!chill) ninja.setFill(new ImagePattern(ninja_stable_1_r));
+        else ninja.setFill(new ImagePattern(chill_r));
     }
 
     //happening per frame
@@ -348,8 +387,14 @@ public class HelloController implements Initializable {
             if(img_timer>0){
                 img_timer--;
             } else {
-                if(ninja.getX()<10) ninja.setFill(new ImagePattern(ninja_stable_1_r));
-                else if(ninja.getX()>470.0) ninja.setFill(new ImagePattern(ninja_stable_1_l));
+                if(ninja.getX()<10) {
+                    if(!chill) ninja.setFill(new ImagePattern(ninja_stable_1_r));
+                    else ninja.setFill(new ImagePattern(chill_r));
+                }
+                else if(ninja.getX()>470.0) {
+                    if(!chill) ninja.setFill(new ImagePattern(ninja_stable_1_l));
+                    else ninja.setFill(new ImagePattern(chill_l));
+                }
             }
 
             score.setText("" + score_num);
@@ -365,7 +410,8 @@ public class HelloController implements Initializable {
                 if(movement_tracker==3) {
                     moving_right = false;
                     movement_tracker=0;
-                    ninja.setFill(new ImagePattern(ninja_stable_2_l));
+                    if(!chill) ninja.setFill(new ImagePattern(ninja_stable_2_l));
+                    else ninja.setFill(new ImagePattern(chill_l));
                     img_timer=10;
                 }
             }
@@ -376,7 +422,8 @@ public class HelloController implements Initializable {
                 if(movement_tracker==3) {
                     moving_left = false;
                     movement_tracker=0;
-                    ninja.setFill(new ImagePattern(ninja_stable_2_r));
+                    if(!chill) ninja.setFill(new ImagePattern(ninja_stable_2_r));
+                    else ninja.setFill(new ImagePattern(chill_r));
                     img_timer=10;
                 }
             }
@@ -397,6 +444,8 @@ public class HelloController implements Initializable {
 
     private void resetGame() {
         game_on = false;
+
+        play_loose();
 
         setStartScreen();
     }
@@ -433,4 +482,21 @@ public class HelloController implements Initializable {
 
         player_name_text="";
     }
+
+    void play_woosh() {
+        if (woosh != null) {
+            woosh.stop();
+            woosh.seek(Duration.ZERO);
+            woosh.play();
+        }
+    }
+
+    void play_loose() {
+        if (loose != null) {
+            loose.stop(); // Stop current playback
+            loose.seek(Duration.ZERO); // Reset to start
+            loose.play();
+        }
+    }
+
 }

@@ -26,33 +26,12 @@ public class HelloApplication extends Application {
         stage.setResizable(false);
         stage.show();
 
-        // Setup music
-        setupBackgroundMusic();
-    }
 
-    private void setupBackgroundMusic() {
-        try {
-            URL musicURL = getClass().getResource("/music/backtracks.mp3");
-            if (musicURL != null) {
-                Media sound = new Media(musicURL.toExternalForm());
-                mediaPlayer = new MediaPlayer(sound);
-                mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                mediaPlayer.play();
-            } else {
-                System.err.println("Music file not found.");
-            }
-        } catch (Exception e) {
-            System.err.println("Exception in setting up background music: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    // Add a method to stop music when the application closes
-    @Override
-    public void stop() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-        }
+        URL musicURL = getClass().getResource("/music/backtracks.mp3");
+        Media background = new Media(musicURL.toExternalForm());
+        mediaPlayer = new MediaPlayer(background);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
     }
 
     public static void main(String[] args) {
