@@ -27,7 +27,7 @@ public class HelloApplication extends Application {
         stage.show();
 
 
-        URL musicURL = getClass().getResource("/music/backtracks.mp3");
+        URL musicURL = getClass().getResource("/pics.audio/backtracks.mp3");
         Media background = new Media(musicURL.toExternalForm());
         mediaPlayer = new MediaPlayer(background);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
