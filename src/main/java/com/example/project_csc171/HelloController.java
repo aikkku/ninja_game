@@ -3,6 +3,7 @@ package com.example.project_csc171;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,6 +25,7 @@ import javafx.util.Duration;
 import javafx.scene.paint.Color;
 
 public class HelloController implements Initializable {
+    public ImageView bg;
     AnimationTimer gameLoop;
 
     @FXML
@@ -138,6 +140,9 @@ public class HelloController implements Initializable {
 
                 if(score_num % 5 == 0) time_decrease+=0.01;
 
+                if(score_num % 50 == 0 && score_num != 0) toNight();
+                else if(score_num % 100 == 0) toDay();
+
                 if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
                 else time_block.setWidth(190);
 
@@ -221,10 +226,15 @@ public class HelloController implements Initializable {
         }
     }
 
-    //todo:
-    //  1. add chainsaws
-    //  2. music
-    //  3. sounds
+    void toDay(){
+        bg = new ImageView("pics.audio/2.png");
+        System.out.println("DAY");
+    }
+
+    void toNight(){
+        bg = new ImageView("pics.audio/4.png");
+        System.out.println("NIGHT");
+    }
 
     String make_leaderboard() {
         String data = "";

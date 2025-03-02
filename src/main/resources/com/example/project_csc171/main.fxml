@@ -5,25 +5,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="867.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project_csc171.HelloController">
+<AnchorPane prefHeight="867.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project_csc171.MenuController">
     <ImageView fitHeight="867.0" fitWidth="600.0" pickOnBounds="true">
         <image>
-            <Image url="@/HD-wallpaper-pixel-art-africa-2018-elephant-orange-red-sky-vaporwave.jpg" />
+            <Image url="@../../../pics.audio/1.png" />
         </image>
     </ImageView>
     <ImageView fitHeight="117.0" fitWidth="538.0" layoutX="31.0" layoutY="150.0" pickOnBounds="true">
-        <image>
-            <Image url="@/title.png" />
-        </image>
-    </ImageView>
-   <Button layoutX="94.0" layoutY="447.0" mnemonicParsing="false" prefHeight="124.0" prefWidth="412.0" text="START" textAlignment="CENTER" textFill="#8c0000">
+      <image>
+         <Image url="@../../../title.png" />
+      </image></ImageView>
+   <Button layoutX="94.0" layoutY="447.0" mnemonicParsing="false" onAction="#switchToScene1" prefHeight="124.0" prefWidth="412.0" style="-fx-background-color: rgba(0, 0, 0, 0.4); -fx-border-color: rgba(158, 94, 0, 1); -fx-border-width: 5px;" text="START" textAlignment="CENTER" textFill="WHITE">
       <font>
-         <Font name="Heavy Gothik" size="56.0" />
+         <Font name="Eugusto-Regular" size="56.0" />
       </font>
    </Button>
-   <Button layoutX="94.0" layoutY="611.0" mnemonicParsing="false" prefHeight="124.0" prefWidth="412.0" text="SETTINGS" textAlignment="CENTER">
+   <Button layoutX="94.0" layoutY="611.0" mnemonicParsing="false" prefHeight="124.0" prefWidth="412.0" style="-fx-background-color: rgba(0, 0, 0, 0.4); -fx-border-color: rgba(158, 94, 0, 1); -fx-border-width: 5px;" text="SETTINGS" textAlignment="CENTER" textFill="WHITE">
       <font>
-         <Font name="CourierStd" size="56.0" />
+         <Font name="Eugusto-Regular" size="54.0" />
       </font>
    </Button>
 
