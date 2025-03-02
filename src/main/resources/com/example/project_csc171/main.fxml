@@ -8,14 +8,10 @@
 <AnchorPane prefHeight="867.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project_csc171.HelloController">
     <ImageView fitHeight="867.0" fitWidth="600.0" pickOnBounds="true">
         <image>
-            <Image url="@/HD-wallpaper-pixel-art-africa-2018-elephant-orange-red-sky-vaporwave.jpg" />
+            <Image url="@/forest2.0.jpg" />
         </image>
     </ImageView>
-    <ImageView fitHeight="117.0" fitWidth="538.0" layoutX="31.0" layoutY="150.0" pickOnBounds="true">
-        <image>
-            <Image url="@/title.png" />
-        </image>
-    </ImageView>
+    <ImageView fitHeight="117.0" fitWidth="538.0" layoutX="31.0" layoutY="150.0" pickOnBounds="true" />
    <Button layoutX="94.0" layoutY="447.0" mnemonicParsing="false" prefHeight="124.0" prefWidth="412.0" text="START" textAlignment="CENTER" textFill="#8c0000">
       <font>
          <Font name="Heavy Gothik" size="56.0" />
