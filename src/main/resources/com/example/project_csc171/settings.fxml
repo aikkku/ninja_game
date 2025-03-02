@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="867.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project_csc171.SettingsController">
+    <ImageView fitHeight="867.0" fitWidth="600.0" pickOnBounds="true">
+        <image>
+            <Image url="@../../../pics.audio/1.png" />
+        </image>
+    </ImageView>
+    <Slider layoutX="118.0" layoutY="177.0" prefHeight="70.0" prefWidth="364.0"
+            min="0" max="100" value="100"/>
+
+    <Slider layoutX="118.0" layoutY="398.0" prefHeight="70.0" prefWidth="364.0"
+            min="0" max="100" value="100"/>
+   <Text fill="WHITE" layoutX="237.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Music" wrappingWidth="125.107421875">
+      <font>
+         <Font name="Pentapixel" size="87.0" />
+      </font></Text>
+   <Text fill="WHITE" layoutX="118.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sound Effects" wrappingWidth="363.9999999999999">
+      <font>
+         <Font name="Pentapixel" size="87.0" />
+      </font>
+   </Text>
+   <Text fill="WHITE" layoutX="138.0" layoutY="731.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Made by Asil and Earvin" textAlignment="CENTER" wrappingWidth="323.9999999999999">
+      <font>
+         <Font name="Pentapixel" size="48.0" />
+      </font>
+   </Text>
+   <Button fx:id="back" layoutX="46.0" layoutY="53.0" mnemonicParsing="false" onAction="#switchToMain" prefHeight="58.0" prefWidth="59.0" style="-fx-background-color: rgba(0,0,0,0.4); -fx-border-color: rgba(158, 94, 0, 1); -fx-border-width: 8px;" text="&lt;" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="27.0" />
+      </font></Button>
+
+</AnchorPane>

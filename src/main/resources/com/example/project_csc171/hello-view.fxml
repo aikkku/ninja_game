@@ -6,9 +6,9 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="plane" maxHeight="-Infinity" maxWidth="600" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#pressed" prefHeight="867.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project_csc171.HelloController">
-   <ImageView fitHeight="867.0" fitWidth="600.0" pickOnBounds="true">
+   <ImageView fx:id="bg" fitHeight="867.0" fitWidth="600.0" pickOnBounds="true">
       <image>
-         <Image url="@/forest2.0.jpg" />
+         <Image url="@../../../pics.audio/2.png" />
       </image>
    </ImageView>
    <Rectangle fx:id="column" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="867.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="158.0" x="221.0" />
