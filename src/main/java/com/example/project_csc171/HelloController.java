@@ -102,8 +102,8 @@ public class HelloController implements Initializable {
     Image chainsaw_l = new Image("/chainsaw_l.png");
     Image chainsaw_r = new Image("/chainsaw_r.png");
 
-    URL sound1 = getClass().getResource("/pics.audio/woosh.mp3");
-    URL sound2 = getClass().getResource("/pics.audio/loose.mp3");
+    URL sound1 = getClass().getResource("/audio/woosh.mp3");
+    URL sound2 = getClass().getResource("/audio/loose.mp3");
 
     Media wooshm = new Media(sound1.toExternalForm());
     Media loosem = new Media(sound2.toExternalForm());
