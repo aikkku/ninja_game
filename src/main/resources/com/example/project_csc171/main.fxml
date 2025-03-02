@@ -12,17 +12,18 @@
         </image>
     </ImageView>
     <ImageView fitHeight="117.0" fitWidth="538.0" layoutX="31.0" layoutY="150.0" pickOnBounds="true">
-      <image>
-         <Image url="@../../../title.png" />
-      </image></ImageView>
-   <Button layoutX="94.0" layoutY="447.0" mnemonicParsing="false" onAction="#switchToScene1" prefHeight="124.0" prefWidth="412.0" style="-fx-background-color: rgba(0, 0, 0, 0.4); -fx-border-color: rgba(158, 94, 0, 1); -fx-border-width: 5px;" text="START" textAlignment="CENTER" textFill="WHITE">
+        <image>
+            <Image url="@/title.png" />
+        </image>
+    </ImageView>
+   <Button layoutX="94.0" layoutY="447.0" mnemonicParsing="false" onAction="#switchToScene1" prefHeight="124.0" prefWidth="412.0" style="-fx-background-color: rgba(0,0,0,0.4); -fx-border-color: rgba(158, 94, 0, 1); -fx-border-width: 8px;" text="START" textAlignment="CENTER" textFill="WHITE">
       <font>
-         <Font name="Eugusto-Regular" size="56.0" />
+         <Font name="Eugusto-Regular" size="65.0" />
       </font>
    </Button>
-   <Button layoutX="94.0" layoutY="611.0" mnemonicParsing="false" prefHeight="124.0" prefWidth="412.0" style="-fx-background-color: rgba(0, 0, 0, 0.4); -fx-border-color: rgba(158, 94, 0, 1); -fx-border-width: 5px;" text="SETTINGS" textAlignment="CENTER" textFill="WHITE">
+   <Button layoutX="94.0" layoutY="611.0" mnemonicParsing="false" onAction="#switchToScene2" prefHeight="124.0" prefWidth="412.0" style="-fx-background-color: rgba(0,0,0,0.4); -fx-border-color: rgba(158, 94, 0, 1); -fx-border-width: 8px;" text="SETTINGS" textAlignment="CENTER" textFill="WHITE">
       <font>
-         <Font name="Eugusto-Regular" size="54.0" />
+         <Font name="Eugusto-Regular" size="64.0" />
       </font>
    </Button>
 

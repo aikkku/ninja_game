@@ -25,6 +25,7 @@ import javafx.util.Duration;
 import javafx.scene.paint.Color;
 
 public class HelloController implements Initializable {
+
     public ImageView bg;
     AnimationTimer gameLoop;
 
@@ -140,7 +141,7 @@ public class HelloController implements Initializable {
 
                 if(score_num % 5 == 0) time_decrease+=0.01;
 
-                if(score_num % 50 == 0 && score_num != 0) toNight();
+                if(score_num % 50 == 0 && score_num % 100 != 0) toNight();
                 else if(score_num % 100 == 0) toDay();
 
                 if(time_block.getWidth()+20 < 190) time_block.setWidth(time_block.getWidth()+20);
@@ -227,13 +228,13 @@ public class HelloController implements Initializable {
     }
 
     void toDay(){
-        bg = new ImageView("pics.audio/2.png");
-        System.out.println("DAY");
+        bg.setImage(new Image("/2.png"));
+        ninja.setOpacity(1);
     }
 
     void toNight(){
-        bg = new ImageView("pics.audio/4.png");
-        System.out.println("NIGHT");
+        bg.setImage(new Image("/4.png"));
+        ninja.setOpacity(0.2);
     }
 
     String make_leaderboard() {
